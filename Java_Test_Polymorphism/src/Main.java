@@ -1,148 +1,235 @@
-import org.omg.CORBA.Object;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 abstract class Shape {
     private String name;
-    Shape(String name){
+
+    public Shape(String name) {
+        this.name = name;
+    }
+    public Shape() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(java.lang.String name) {
         this.name = name;
     }
 
-
-    abstract public  double  getArea();
-    public  String  getName()
-    {
-        return name;
+    public String toString() {
+        return "[" + this.name + "], Properties [" + this.getProperties() + "]";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Shape s = (Shape) o;
+        return this.getUniqueKey().equals(s.getUniqueKey());
+    }
+
+    @Override
+    public int hashCode() {
+        if (name == null) {
+            return (int)getArea();
+        }
+        return (int)getArea() +  getName().hashCode();
+    }
+
+    abstract public double getArea();
+    abstract protected String getProperties();
+    abstract protected String getUniqueKey();
 }
+
 class Circle extends Shape {
-    double radius;
-    public Circle(double r, String name)
-    {
+    private double radius;
+
+    public Circle(double r) {
+        super("Circle");
+        radius = r;
+    }
+    public Circle(String name , double r) {
         super(name);
         radius = r;
     }
+
     @Override
-    public double  getArea()
-    {
+    public double getArea() {
         return Math.PI * radius*radius;
     }
 
-}
-class Rectangle extends Shape {
+    public double getRadius() {
+        return this.radius;
+    }
 
-    double width, height;
-    public Rectangle(double h, double w, String name)
-    {
+    protected String getUniqueKey() {
+        return this.getName() + this.getRadius();
+    }
+
+    protected String getProperties() {
+        return "Radius: " + this.getRadius() + ", Area: " + this.getArea();
+    }
+}
+
+class Rectangle extends Shape {
+    private double width;
+    private double height;
+
+    public Rectangle(double h, double w) {
+        super("Rectangle");
+        width = w;
+        height = h;
+    }
+    public Rectangle(String name, double h, double w) {
         super(name);
         width = w;
         height = h;
     }
+
     @Override
-    public double  getArea()
-    {
+    public double getArea() {
         return width * height;
     }
 
-}
-class MyUtils {
-    public List<Shape> maxAreas(List<Shape> shapes) {
-        List<Shape> circle = new ArrayList<Shape>();
-        List<Shape> rectangle = new ArrayList<Shape>();
-        for(int i = 0; i < shapes.size(); i++)
-        {
-            if(shapes.get(i).getName() == "circle")
-            {
-
-                circle.add(shapes.get(i));
-            }
-            if(shapes.get(i).getName() == "rectangle")
-            {
-                rectangle.add(shapes.get(i));
-            }
-        }
-
-        double max = circle.get(0).getArea();
-        int index = 0;
-        ArrayList<Integer> index1 = new ArrayList<>();
-        for(int i = 0; i < circle.size(); i++)
-        {
-            if(max <= circle.get(i).getArea())
-            {
-                max = circle.get(i).getArea();
-                index = i;
-                index1.add(i);
-            }
-
-        }
-
-        List<Shape> shapes_2 = new ArrayList<Shape>();
-        for(int i = 0; i <index1.size(); i++)
-        {
-            shapes_2.add(circle.get(index1.get(i)));
-        }
-
-
-        max = rectangle.get(0).getArea();
-        index = 0;
-        ArrayList<Integer> index2 = new ArrayList<>();
-        for(int i = 0; i < rectangle.size(); i++)
-        {
-            if(max <= rectangle.get(i).getArea())
-            {
-                max = rectangle.get(i).getArea();
-                index = i;
-                index2.add(i);
-            }
-
-        }
-        for(int i = 0; i < index2.size(); i++)
-        {
-            shapes_2.add(rectangle.get(index2.get(i)));
-        }
-        //shapes_2.add(rectangle.get(index));
-        return shapes_2;
+    public double getWidth() {
+        return this.width;
     }
+
+    public double getHeight() {
+        return this.height;
+    }
+
+    protected String getUniqueKey() {
+        return this.getName() + this.width + "" + this.height;
+    }
+
+    protected String getProperties() {
+        return "Width: " + this.getWidth() + ", Height: " + this.getHeight() + ", Area: " + this.getArea();
+    }
+}
+
+class MyUtils {
+    public void printList(List<Shape> shapes) {
+        for (Shape s: shapes) {
+            System.out.println(s);
+        }
+    }
+
+    public  List<Shape> maxAreas(List<Shape> shapes) {
+        return shapes.stream()
+                .sorted(Comparator.comparing(Shape::getArea, Comparator.reverseOrder()))
+                .limit(3).collect(Collectors.toList());
+    }
+
+
+/*
+    public List<Shape> maxAreas(List<Shape> shapes) {
+        Map<String, Double> maxAreas = new HashMap<>();
+
+        for (Shape s: shapes) {
+            if (!maxAreas.containsKey(s.getName())) {
+                // As we calculate area, it can't be negetive.
+                maxAreas.put(s.getName(), 0.);
+            }
+            if (s.getArea() > maxAreas.get(s.getName())) {
+                maxAreas.put(s.getName(), s.getArea());
+            }
+        }
+
+        // check what we have in maximum areas for each type of shapes
+        // maxAreas.forEach((k, v) -> System.out.println(k + " " + v));
+
+        List<Shape> filteredShapes = new ArrayList<>();
+        for (Shape s: shapes) {
+            if (s.getArea() == maxAreas.get(s.getName()) && !filteredShapes.contains(s)) {
+                filteredShapes.add(s);
+            }
+        }
+
+        return filteredShapes;
+    }
+
+    */
 }
 
 
 
 public class Main {
-
-
-    public static void main(String ... args)
-    {
-
-        Circle c = new Circle(2.0,"circle");
-        Circle c2 = new Circle(1.0,"circle");
-        Circle c3 = new Circle(0.5,"circle");
-
-        Rectangle r = new Rectangle(2.0, 3.0, "rectangle");
-        Rectangle r2 = new Rectangle(3.0, 2.0, "rectangle");
-        Rectangle r3 = new Rectangle(1.0, 2.0, "rectangle");
-
-        ArrayList<Shape> al = new ArrayList<Shape>();
+    public static void checkTwoEqualCircles() {
+        System.out.println("[checkTwoEqualCircles]\n");
+        Circle c = new Circle(0.5);
+        ArrayList<Shape> al = new ArrayList<>();
         al.add(c);
-        al.add(r);
-        al.add(c2);
-        al.add(r2);
-        al.add(c3);
-        al.add(r3);
-
+        al.add(c);
         MyUtils myUtils = new MyUtils();
-        List<Shape> l =  myUtils.maxAreas(al);
-
-        for(int i = 0; i < l.size(); i++)
-        {
-            System.out.println(l.get(i).getName() + " area = " + l.get(i).getArea());
-        }
-
-
+        List<Shape> newList = myUtils.maxAreas(al);
+        myUtils.printList(newList);
+        System.out.println("*****************************");
     }
 
+    public static void checkTwoEqualRectangles() {
+        System.out.println("[checkTwoEqualRectangles]\n");
+        Rectangle r = new Rectangle(1.5, 12.0);
+        ArrayList<Shape> al = new ArrayList<>();
+        al.add(r);
+        al.add(new Rectangle(1.5, 12.0));
+        MyUtils myUtils = new MyUtils();
+        List<Shape> newList = myUtils.maxAreas(al);
+        myUtils.printList(newList);
+        System.out.println("*****************************");
+    }
+
+    public static void checkCirclesAndRectangles() {
+        System.out.println("[checkCirclesAndRectangles]\n");
+        ArrayList<Shape> al = new ArrayList<>();
+        al.add(new Circle(0.5));
+        al.add(new Rectangle(2.0, 3.0));
+        al.add(new Circle(1.0));
+        al.add(new Rectangle(3.0, 2.0));
+        al.add(new Circle(2.0));
+        al.add(new Rectangle(2.0, 1.0));
+        al.add(new Circle(2.0));
+        MyUtils myUtils = new MyUtils();
+        List<Shape> newList = myUtils.maxAreas(al);
+        myUtils.printList(newList);
+        System.out.println("*****************************");
+    }
+
+    public static void checkUniqueAll() {
+        System.out.println("[checkUniqueAll]\n");
+        ArrayList<Shape> al = new ArrayList<>();
+        al.add(new Circle(0.5));
+        al.add(new Rectangle(2.0, 3.0));
+        al.add(new Circle(15.35));
+        al.add(new Rectangle(12.0, 35.0));
+        MyUtils myUtils = new MyUtils();
+        List<Shape> newList = myUtils.maxAreas(al);
+        myUtils.printList(newList);
+        System.out.println("*****************************");
+    }
+
+    public static void checkOneRectangle() {
+        System.out.println("[checkOneRectangle]\n");
+        ArrayList<Shape> al = new ArrayList<>();
+        al.add(new Rectangle(2.0, 3.0));
+        MyUtils myUtils = new MyUtils();
+        List<Shape> newList = myUtils.maxAreas(al);
+        myUtils.printList(newList);
+        System.out.println("*****************************");
+    }
+
+    public static void main(String ... args) {
+        checkTwoEqualCircles();
+        checkTwoEqualRectangles();
+        checkCirclesAndRectangles();
+        checkUniqueAll();
+        checkOneRectangle();
+    }
 }
