@@ -23,7 +23,7 @@ class Employee {
     public BigDecimal getPayment() {
         return basePayment;
     }
-
+/*
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -37,6 +37,33 @@ class Employee {
     public int hashCode() {
         return Objects.hash(name, experience, basePayment);
     }
+*/
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Employee other = (Employee) obj;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        return true;
+    }
+
 
     @Override
     public String toString() {
@@ -61,40 +88,75 @@ class Manager extends Employee {
     public String toString() {
         return "Manager [name=" + getName() + ", experience=" + getExperience() + ", basePayment=" + getPayment() + ", coefficient=" + coefficient + "]";
     }
+
+    public double getCoefficient()
+    {
+        return  coefficient;
+    }
+
 }
 
 class MyUtils {
     public List<Employee> largestEmployees(List<Employee> workers) {
-        List<Employee> largestEmployees = new ArrayList<>();
-
-        // Find the maximum experience and payment
+        List<Employee> result = new ArrayList<>();
         int maxExperience = Integer.MIN_VALUE;
         BigDecimal maxPayment = BigDecimal.valueOf(Double.MIN_VALUE);
-        for (Employee employee : workers) {
-            if (employee.getExperience() > maxExperience) {
-                maxExperience = employee.getExperience();
-                maxPayment = employee.getPayment();
-            } else if (employee.getExperience() == maxExperience) {
-                maxPayment = maxPayment.max(employee.getPayment());
-            } else {
-                // do nothing
+
+        for (Employee worker : workers) {
+            try{
+                if (worker.getExperience() > maxExperience) {
+                    maxExperience = worker.getExperience();
+                    maxPayment = worker.getPayment();
+                } else if (worker.getExperience() == maxExperience && worker.getPayment().compareTo(maxPayment) > 0) {
+                    maxPayment = worker.getPayment();
+                }
+            }
+            catch (NullPointerException e){
+
+            }
+
+
+        }
+
+        Set<Employee> employees = new HashSet<>();
+        for (Employee worker : workers) {
+            try{
+                if (worker.getExperience() == maxExperience && worker.getPayment().compareTo(maxPayment) == 0) {
+                    employees.add(worker);
+                }
+            }
+            catch (NullPointerException e){
+
+            }
+
+        }
+        result.addAll(employees);
+
+/*
+        for(Employee e : employees)
+        {
+            if(e != null)
+            {
+                result.add(e);
             }
         }
 
-        // Add employees with maximum experience or payment to the result set
 
-        Set<Employee> resultSet = new HashSet<>();
-        for (Employee employee : workers) {
-            if (employee.getExperience() == maxExperience && employee.getPayment().equals(maxPayment)) {
-                resultSet.add(employee);
+
+        try {
+            if(result.contains(null))
+            {
+                throw new NullPointerException();
             }
         }
+        catch (NullPointerException e)
+        {
 
-        // Sort the result set by name
-        largestEmployees.addAll(resultSet);
-        Collections.sort(largestEmployees, Comparator.comparing(Employee::getName));
+        }
 
-        return largestEmployees;
+*/
+
+        return result;
     }
 }
 
@@ -110,6 +172,7 @@ public class Main {
         employees.add(new Employee("Andriy", 7, BigDecimal.valueOf(3500.00)));
         employees.add(new Employee("Ihor", 5, BigDecimal.valueOf(4500.00)));
         employees.add(new Manager("Vasyl", 8, BigDecimal.valueOf(2000.00), 2.0));
+        employees.add(null);
 
         MyUtils myUtils = new MyUtils();
        List<Employee> l = myUtils.largestEmployees(employees);
@@ -117,5 +180,7 @@ public class Main {
        {
            System.out.println(l.get(i));
        }
+
+
     }
 }

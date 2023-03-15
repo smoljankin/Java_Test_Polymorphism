@@ -2,13 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0e227f50-5cf9-4720-b606-03677b69a458" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Java_Test_1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Java_Test_1/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java_Test_1/out/production/Java_Test_1/Employee.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Java_Test_1/out/production/Java_Test_1/Employee.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java_Test_1/out/production/Java_Test_1/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Java_Test_1/out/production/Java_Test_1/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java_Test_1/out/production/Java_Test_1/Manager.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Java_Test_1/out/production/Java_Test_1/Manager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java_Test_1/out/production/Java_Test_1/MyUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Java_Test_1/out/production/Java_Test_1/MyUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java_Test_1/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Java_Test_1/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Java_Test_Polymorphism/Circle.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Java_Test_Polymorphism/Circle.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Java_Test_Polymorphism/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Java_Test_Polymorphism/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Java_Test_Polymorphism/MyUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Java_Test_Polymorphism/MyUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Java_Test_Polymorphism/Rectangle.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Java_Test_Polymorphism/Rectangle.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Java_Test_Polymorphism/Shape.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Java_Test_Polymorphism/Shape.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
